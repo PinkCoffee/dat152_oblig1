@@ -1,5 +1,7 @@
 "use strict";
 
 var config = {
-	servicesPath: '../Mservices/data'  
+		refreshInterval: 5000,
+		requestType: 'GET',
+		servicesPath: '../Mservices/data'
 };

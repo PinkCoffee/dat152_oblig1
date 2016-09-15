@@ -3,7 +3,6 @@
 class AjaxComm {
 	constructor () {
 		this.logId = -1
-		this.receivedDataHandler = new Array()
 	}
 	
 	/*
@@ -46,28 +45,34 @@ class AjaxComm {
 		ajax.del([memberId])
 	}
 	
-	gotResponse(responseText) {
+	gotUpdate(responseText) {
 		console.log("AjaxComm: Recieved data \"" + receivedData + "\".")
-		let object = JSON.parse(responseText)
+		let jsonObject = JSON.parse(responseText)
 		
 		// Proceed if request was understood and processed
-		if (object.updates.status) {
-			this.logId = object.updates.logId
+		if (jsonObject.updates.status) {
+			this.logId = jsonObject.updates.logId
 			
-			// Iterate through new, updated and deleted members
+			// Check if there are new members since last update
+			if (jsonObject.updates.hasOwnProperty('newMembers')) {
+				// Check if there are multiple new members
+				if (jsonObject.updates.newMembers instanceof Array) {
+					// Multiple new entries; iterate
+				} else {
+					// Single new entry
+				}
+			}
+			
+			// TODO iterate through updated and deleted members
 		}
-		
-		
-		// Code handle the received data
-		this.receivedDataHandler.forEach(method => {method(receivedData)})
 	}
 	
 	gotMember(responseText) {
-		console.log("AjaxComm: Recieved data \"" + receivedData + "\".")
-		let object = JSON.parse(responseText)
+		console.log("AjaxComm: Recieved data \"" + responseText + "\".")
+		let jsonObject = JSON.parse(responseText)
 		
 		// Send update request if member has been added/updated/deleted
-		if (object.updatedMember.status == "true") {
+		if (jsonObject.updatedMember.status) {
 			getUpdate(logId);
 		}
 	}
