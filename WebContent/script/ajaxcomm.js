@@ -8,7 +8,7 @@ class AjaxComm {
 	/*
 	 * Service syntax: get /updates/{logId}
 	 */
-	getUpdate(logId) {
+	getUpdate() {
 		let url = config.servicesPath + "/updates"
 		const ajax = new AJAXConnection(url)
 		ajax.onsuccess = gotUpdate
@@ -20,7 +20,7 @@ class AjaxComm {
 	 */
 	insertMember(member) {
 		let url = config.servicesPath + "/member"
-		const ajax = new AJAXConnection(url)
+		const ajax = new AJAXConnection(url, config.requestType)
 		ajax.onsuccess = gotMember
 		ajax.post(null,{'member': member})
 	}
@@ -30,7 +30,7 @@ class AjaxComm {
 	 */
 	updateMember(memberId, member) {
 		let url = config.servicesPath + "/member"
-		const ajax = new AJAXConnection(url)
+		const ajax = new AJAXConnection(url, config.requestType)
 		ajax.onsuccess = gotMember
 		ajax.put([memberId],{'member': member})
 	}
@@ -40,7 +40,7 @@ class AjaxComm {
 	 */
 	deleteMember(memberId) {
 		let url = config.servicesPath + "/member"
-		const ajax = new AJAXConnection(url)
+		const ajax = new AJAXConnection(url, config.requestType)
 		ajax.onsuccess = gotMember
 		ajax.del([memberId])
 	}
@@ -93,9 +93,8 @@ class AjaxComm {
 		}
 	}
 	
-	// Hvis vi skal omforme json-objekt til en Member-klasse
+	// TODO hvis vi skal omforme json-objekt til en Member-klasse
 	parseMember(member) {
-		// TODO selve omformingen
 		return member
 	}
 	
@@ -105,7 +104,7 @@ class AjaxComm {
 		
 		// Send update request if member has been added/updated/deleted
 		if (jsonObject.status) {
-			getUpdate(logId);
+			getUpdate();
 		}
 	}
 }
