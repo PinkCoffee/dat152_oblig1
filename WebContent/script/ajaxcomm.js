@@ -49,22 +49,22 @@ class AjaxComm {
 		console.log("AjaxComm: Recieved data \"" + receivedData + "\".")
 		let jsonObject = JSON.parse(responseText).updates
 		
-		// Proceed if request was understood and processed
+		// Fortsett dersom ajax-forespørsel var forstått
 		if (jsonObject.status) {
 			this.logId = jsonObject.logId
 			
-			// Check if there are new members since last update
+			// Sjekk for nye medlemmer
 			if (jsonObject.hasOwnProperty('newMembers')) {
-				// Check if there are multiple new members
+				// Sjekk om det er en eller flere medlemmer det er snakk om
 				if (jsonObject.newMembers instanceof Array) {
-					// Multiple new entries; iterate
+					// Flere oppføringer; iterer
 					for (let i of jsonObject.newMembers) {
-						member = parseMember(i)
+						let member = parseMember(i)
 						// UIHandler.addRow(member)
 					}
 				} else {
-					// Single new entry
-					member = parseMember(jsonObject.newMembers)
+					// En oppføring
+					let member = parseMember(jsonObject.newMembers)
 					// UIHandler.addRow(member)
 				}
 			}
@@ -72,11 +72,11 @@ class AjaxComm {
 			if (jsonObject.hasOwnProperty('updatedMembers')) {
 				if (jsonObject.updatedMembers instanceof Array) {
 					for (let i of jsonObject.updatedMembers) {
-						member = parseMember(i)
+						let member = parseMember(i)
 						// UIHandler.editRow(member.memberId, member)
 					}
 				} else {
-					member = parseMember(jsonObject.updatedMembers)
+					let member = parseMember(jsonObject.updatedMembers)
 					// UIHandler.editRow(member.memberId, member)
 				}
 			}
@@ -102,7 +102,7 @@ class AjaxComm {
 		console.log("AjaxComm: Recieved data \"" + responseText + "\".")
 		let jsonObject = JSON.parse(responseText).updatedMember
 		
-		// Send update request if member has been added/updated/deleted
+		// Send update-forespørsel hvis medlem har blitt lagt til/endret/slettet
 		if (jsonObject.status) {
 			getUpdate();
 		}

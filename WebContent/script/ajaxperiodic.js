@@ -4,7 +4,7 @@ class AjaxPeriodic {
 	constructor() {
 		this.communication = new AjaxComm()
 		this.interval = config.requestInterval
-		this.id = 0 // ID value of timer 
+		this.id = 0 // ID-verdi til timer 
 	}
 	
 	setSuccessHandler(method) {}
