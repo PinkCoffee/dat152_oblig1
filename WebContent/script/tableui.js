@@ -8,16 +8,14 @@
 class TableUI {
 	constructor() {
 		this.comm = new AjaxComm()
-		document.getElementById("add").addEventListener("click", addByButton, false)
-	  	this.tElm = document.forms[0].getElementsByTagName('table')[0]
-		this.state = new Object() // fungerer som HashMap
+	  	this.tElm = document.getElementById('tElm')
+		this.state = [] // fungerer som HashMap
 	}
 	
 	// Medlemsfunksjoner som kjøres av events
 	
 	addByButton() {
-		let row = tElm.rows.length
-		addRow()
+		let row = addRow()
 		toggleEditable(row)
 	}
 	
@@ -44,7 +42,7 @@ class TableUI {
 			} else {
 				// Eksisterende medlemmer har allerede definert kolonne og tilstand
 				toggleEditable(row)
-				AjaxComm.updateMember(member)
+				comm.updateMember(member)
 				restoreState(row)
 			}
 		}
@@ -57,6 +55,27 @@ class TableUI {
 		} else {
 			toggleEditable(row)
 			restoreState(row)
+		}
+	}
+	
+	newMembers(members) {
+		for (member in members) {
+			let row = addRow()
+			setData(row, member)
+		}
+	}
+	
+	updatedMembers(members) {
+		for (member in members) {
+			let row = findPosition(member.memberId)
+			setData(row, member)
+		}
+	}
+	
+	deletedMembers(members) {
+		for (member in members) {
+			let row = findPosition(member.memberId)
+			deleteRow(row)
 		}
 	}
 	
@@ -82,6 +101,8 @@ class TableUI {
 		editButton.value = "Edit"
 		editButton.addEventListener("click", editByButton, true)
 		rowElement.cells[6].appendChild(editButton)
+		
+		return pos
 	}
 	
 	deleteRow(row) {
@@ -186,7 +207,7 @@ class TableUI {
 	restoreState(row) {
 		member = state[row]
 		state[row] = undefined
-		// editRow(row, member)
+		setData(row, member)
 	}
 	
 	hasState(row) {
@@ -194,5 +215,10 @@ class TableUI {
 	}
 }
 
+function init() {
+	let uihandler = new TableUI()
+	document.getElementById("add").addEventListener("click", uihandler.addByButton, false)
+}
+
 // Vent til dokumentet er ferdig lastet (trenger tilgang til DOM-elementer)
-window.addEventListener("load", constructor, true)
+window.addEventListener("load", init, true)
