@@ -18,6 +18,7 @@ class AJAXConnection {
     
     xmlhttprequest.open('GET', url, true)
     xmlhttprequest.addEventListener("loadend",this._dataReceived.bind(this),true)
+
     if (this.onerror) xmlhttprequest.addEventListener("error",this.onerror.bind(this),true)
 
     // Sending request
